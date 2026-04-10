@@ -1,0 +1,58 @@
+{
+  "users": [],
+  "jobs": [
+    {
+      "id": "1",
+      "title": "Frontend Developer",
+      "company": "TechCorp",
+      "location": "Remote",
+      "type": "Full-time",
+      "skills": ["React", "TypeScript", "Tailwind CSS"],
+      "description": "We are looking for a skilled Frontend Developer to join our team."
+    },
+    {
+      "id": "2",
+      "title": "Data Scientist",
+      "company": "DataViz",
+      "location": "New York, NY",
+      "type": "Full-time",
+      "skills": ["Python", "Machine Learning", "SQL"],
+      "description": "Join our data team to build predictive models."
+    },
+    {
+      "id": "3",
+      "title": "Product Designer",
+      "company": "CreativeFlow",
+      "location": "London, UK",
+      "type": "Contract",
+      "skills": ["Figma", "UI/UX", "Prototyping"],
+      "description": "Design beautiful and functional user interfaces."
+    }
+  ],
+  "courses": [
+    {
+      "id": "1",
+      "title": "Modern React Mastery",
+      "provider": "SkillUp",
+      "duration": "10 hours",
+      "level": "Intermediate",
+      "skills": ["React", "Hooks", "State Management"]
+    },
+    {
+      "id": "2",
+      "title": "Python for Data Science",
+      "provider": "DataCamp",
+      "duration": "15 hours",
+      "level": "Beginner",
+      "skills": ["Python", "Pandas", "NumPy"]
+    },
+    {
+      "id": "3",
+      "title": "UI/UX Design Fundamentals",
+      "provider": "DesignSchool",
+      "duration": "8 hours",
+      "level": "Beginner",
+      "skills": ["Figma", "Design Principles", "User Research"]
+    }
+  ]
+}
