@@ -107,7 +107,14 @@ async function startServer() {
     const userIndex = db.users.findIndex((u: any) => u.id === req.user.id);
     if (userIndex === -1) return res.status(404).json({ message: "User not found" });
 
-    db.users[userIndex] = { ...db.users[userIndex], ...req.body };
+    // Only allow whitelisted fields so clients cannot overwrite id, email or password.
+    const allowed = ["name", "skills", "education", "interests", "assessments"];
+    const updates: Record<string, unknown> = {};
+    for (const key of allowed) {
+      if (key in (req.body ?? {})) updates[key] = req.body[key];
+    }
+
+    db.users[userIndex] = { ...db.users[userIndex], ...updates };
     writeDB(db);
     res.json({ message: "Profile updated successfully" });
   });
