@@ -12,7 +12,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const DB_PATH = path.join(__dirname, "db.json");
-const JWT_SECRET = "skill-connect-secret-key";
+// Set JWT_SECRET in the environment for any real deployment; the fallback is for local dev only.
+const JWT_SECRET = process.env.JWT_SECRET || "skill-connect-secret-key";
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function readDB() {
   const data = fs.readFileSync(DB_PATH, "utf-8");
@@ -51,9 +53,18 @@ async function startServer() {
 
   // User Registration
   app.post("/api/auth/register", async (req, res) => {
-    const { email, password, name } = req.body;
+    const { email, password, name } = req.body ?? {};
+    if (
+      typeof email !== "string" || !EMAIL_RE.test(email) ||
+      typeof password !== "string" || password.length < 6 ||
+      typeof name !== "string" || !name.trim()
+    ) {
+      return res.status(400).json({
+        message: "A valid email, a name and a password of at least 6 characters are required",
+      });
+    }
     const db = readDB();
-    
+
     if (db.users.find((u: any) => u.email === email)) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -79,7 +90,10 @@ async function startServer() {
 
   // User Login
   app.post("/api/auth/login", async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body ?? {};
+    if (typeof email !== "string" || typeof password !== "string") {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
     const db = readDB();
     const user = db.users.find((u: any) => u.email === email);
 
