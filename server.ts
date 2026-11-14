@@ -84,7 +84,7 @@ async function startServer() {
     db.users.push(newUser);
     writeDB(db);
 
-    const token = jwt.sign({ id: newUser.id, email: newUser.email }, JWT_SECRET);
+    const token = jwt.sign({ id: newUser.id, email: newUser.email }, JWT_SECRET, { expiresIn: "7d" });
     res.json({ token, user: { id: newUser.id, email: newUser.email, name: newUser.name } });
   });
 
@@ -101,7 +101,7 @@ async function startServer() {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET);
+    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: "7d" });
     res.json({ token, user: { id: user.id, email: user.email, name: user.name } });
   });
 
