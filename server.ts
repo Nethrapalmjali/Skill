@@ -123,9 +123,22 @@ async function startServer() {
 
     // Only allow whitelisted fields so clients cannot overwrite id, email or password.
     const allowed = ["name", "skills", "education", "interests", "assessments"];
+    const body = req.body ?? {};
     const updates: Record<string, unknown> = {};
     for (const key of allowed) {
-      if (key in (req.body ?? {})) updates[key] = req.body[key];
+      if (key in body) updates[key] = body[key];
+    }
+
+    // Reject values of the wrong type so a bad request cannot corrupt the stored profile.
+    const isStringArray = (v: unknown) => Array.isArray(v) && v.every((x) => typeof x === "string");
+    if (
+      ("name" in updates && (typeof updates.name !== "string" || !updates.name.trim())) ||
+      ("education" in updates && typeof updates.education !== "string") ||
+      ("skills" in updates && !isStringArray(updates.skills)) ||
+      ("interests" in updates && !isStringArray(updates.interests)) ||
+      ("assessments" in updates && !Array.isArray(updates.assessments))
+    ) {
+      return res.status(400).json({ message: "Invalid profile field types" });
     }
 
     db.users[userIndex] = { ...db.users[userIndex], ...updates };
