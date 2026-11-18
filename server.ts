@@ -53,7 +53,9 @@ async function startServer() {
 
   // User Registration
   app.post("/api/auth/register", async (req, res) => {
-    const { email, password, name } = req.body ?? {};
+    const { email: rawEmail, password, name } = req.body ?? {};
+    // Normalise so "User@Example.com " and "user@example.com" are the same account.
+    const email = typeof rawEmail === "string" ? rawEmail.trim().toLowerCase() : rawEmail;
     if (
       typeof email !== "string" || !EMAIL_RE.test(email) ||
       typeof password !== "string" || password.length < 6 ||
@@ -90,7 +92,8 @@ async function startServer() {
 
   // User Login
   app.post("/api/auth/login", async (req, res) => {
-    const { email, password } = req.body ?? {};
+    const { email: rawEmail, password } = req.body ?? {};
+    const email = typeof rawEmail === "string" ? rawEmail.trim().toLowerCase() : rawEmail;
     if (typeof email !== "string" || typeof password !== "string") {
       return res.status(400).json({ message: "Email and password are required" });
     }
