@@ -27,7 +27,8 @@ function writeDB(data: any) {
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const parsedPort = Number(process.env.PORT);
+  const PORT = Number.isInteger(parsedPort) && parsedPort > 0 && parsedPort < 65536 ? parsedPort : 3000;
 
   app.use(cors());
   app.use(bodyParser.json());

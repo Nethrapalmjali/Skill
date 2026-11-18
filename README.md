@@ -32,7 +32,7 @@ React 19, Vite, Tailwind CSS, Express, JWT auth (bcryptjs), Google Gemini (`@goo
 
 ## Scripts
 
-- `npm run dev` – start the Express + Vite dev server on port 3000
+- `npm run dev` – start the Express + Vite dev server (port 3000 by default, override with `PORT`)
 - `npm run build` – production build into `dist/`
 - `npm run lint` – type-check with `tsc --noEmit`
 
